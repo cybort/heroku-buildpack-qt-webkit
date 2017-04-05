@@ -53,7 +53,7 @@ EOF
 configure_qt() {
 	topic "Configuring QT, writing qt.conf"
 
-	cat << EOF >$BUILD_DIR/$QTDIR/qt.conf
+	cat << EOF >$BUILD_DIR/$QTDIR/bin/qt.conf
 [Paths]
 Prefix=/app/$QTDIR
 Headers=/app/.apt/usr/include/qt5/
