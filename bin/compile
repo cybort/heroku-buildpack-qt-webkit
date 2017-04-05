@@ -69,7 +69,7 @@ configure_export_env() {
     export QTDIR=$BUILD_DIR/$QTDIR
 	export QT_QPA_PLATFORM_PLUGIN_PATH=$HOME/$QTDIR/plugins/
 	export | grep -E -e ' (PATH|QT_QPA_PLATFORM_PLUGIN_PATH|LD_LIBRARY_PATH|LIBRARY_PATH|INCLUDE_PATH|CPATH|CPPPATH|PKG_CONFIG_PATH)=' >> "$BP_DIR/export"
-    qmake -set QMAKE_SPEC $QTDIR
+    qmake -set QMAKE_SPEC $QTDIR/bin
     qmake --version
 
 	cat << EOF >$BUILD_DIR/.profile.d/001_qt.sh
