@@ -78,6 +78,9 @@ EOF
 freedom_patch_xvfb() {
 	topic "Configuring Xvfb for apt"
 
+	ls -la /app/.apt/usr/bin
+	sudo cat /app/.apt/usr/bin/Xvfb
+
 	# patch Xvfb to use /app/.. paths instead of hardcoded wrong values
 	sed -i s:/usr/bin:/app/nib: "/app/.apt/usr/bin/Xvfb"
 	# create symlinks for Xvfb to use /app/.apt/usr/...
