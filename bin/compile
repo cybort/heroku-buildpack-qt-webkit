@@ -7,7 +7,7 @@ set -e
 BUILD_DIR=$1
 CACHE_DIR=$2
 BP_DIR=`cd $(dirname $0); cd ..; pwd`
-QT_BIN_DIR=".apt/usr/lib/x86_64-linux-gnu/qt5/bin"
+QTDIR=.apt/usr/lib/x86_64-linux-gnu/qt5
 
 function error() {
 	echo " !     $*" >&2
@@ -53,9 +53,9 @@ EOF
 configure_qt() {
 	topic "Configuring QT, writing qt.conf"
 
-	cat << EOF >$BUILD_DIR/$QT_BIN_DIR/qt.conf
+	cat << EOF >$BUILD_DIR/$QTDIR/qt.conf
 [Paths]
-Prefix=/app/.apt/usr/lib/x86_64-linux-gnu/qt5/
+Prefix=/app/$QTDIR
 Headers=/app/.apt/usr/include/qt5/
 EOF
 }
@@ -64,22 +64,19 @@ configure_export_env() {
 	topic "Setting up environment"
 
 	source $BUILD_DIR/.profile.d/000_apt.sh
-	export PATH=$BUILD_DIR/$QT_BIN_DIR:$PATH
+	export PATH=$BUILD_DIR/$QTDIR/bin:$PATH
 	# point to where the qt platform plugins exist
-	export QT_QPA_PLATFORM_PLUGIN_PATH=$HOME/.apt/usr/lib/x86_64-linux-gnu/qt5/plugins/
+	export QT_QPA_PLATFORM_PLUGIN_PATH=$HOME/$QTDIR/plugins/
 	export | grep -E -e ' (PATH|QT_QPA_PLATFORM_PLUGIN_PATH|LD_LIBRARY_PATH|LIBRARY_PATH|INCLUDE_PATH|CPATH|CPPPATH|PKG_CONFIG_PATH)=' >> "$BP_DIR/export"
 
 	cat << EOF >$BUILD_DIR/.profile.d/001_qt.sh
-export PATH="\$HOME/$QT_BIN_DIR:\$PATH"
-export QT_QPA_PLATFORM_PLUGIN_PATH=\$HOME/.apt/usr/lib/x86_64-linux-gnu/qt5/plugins/
+export PATH="\$HOME/$QTDIR/bin:\$PATH"
+export QT_QPA_PLATFORM_PLUGIN_PATH=\$HOME/$QTDIR/plugins/
 EOF
 }
 
 freedom_patch_xvfb() {
 	topic "Configuring Xvfb for apt"
-
-    ls -la $BUILD_DIR/.apt/usr
-    ls -la $BUILD_DIR/.apt/usr/bin
 
 	# patch Xvfb to use /app/.. paths instead of hardcoded wrong values
 	sed -i s:/usr/bin:/app/nib: $BUILD_DIR/.apt/usr/bin/Xvfb
