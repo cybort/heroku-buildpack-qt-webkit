@@ -79,8 +79,9 @@ freedom_patch_xvfb() {
 	topic "Configuring Xvfb for apt"
 
     qmake --version
-    echo $QTDIR
-    ls -la $QTDIR
+    ls -la $BUILD_DIR/$QTDIR
+    ls -la $BUILD_DIR/$QTDIR/mkspecs
+    ls -la $HOME/$QTDIR
 
 	# patch Xvfb to use /app/.. paths instead of hardcoded wrong values
 	sed -i s:/usr/bin:/app/nib: $BUILD_DIR/.apt/usr/bin/Xvfb
