@@ -78,10 +78,10 @@ EOF
 freedom_patch_xvfb() {
 	topic "Configuring Xvfb for apt"
 
-	ls -la /app/
-	ls -la /app/vendor/.apt/usr/bin
-	ls -la /app/.apt
-	ls -la /app/.apt/usr
+	ls -la /
+	ls -la /app
+	ls -la /app/vendor
+	ls -la /app/vendor/.apt
 
 	# patch Xvfb to use /app/.. paths instead of hardcoded wrong values
 	sed -i s:/usr/bin:/app/nib: "/app/.apt/usr/bin/Xvfb"
